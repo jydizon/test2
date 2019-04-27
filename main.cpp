@@ -811,3 +811,816 @@ class staff {
             break;
           }
         }
+        fin.close();
+        fout.close();
+        backToMenu();
+          break;
+        case 9:
+        //input ID
+        cout << "Enter ID number of staff you want to modify : ";
+        cin >> staffID;
+        cout <<endl;
+
+        for (int k=0; k<500; k++)
+        {
+          if (staffrecord[k][1] == staffID)
+          {
+            //input new slot 4
+            cout << "Enter new " << staffrecord[0][9] << ": ";
+            cin >> newslot4;
+            cout <<endl;
+
+            // outputting attribute headers
+            cout << "===================================================================================================================================================================================";
+            cout << endl;
+            for (int i=0; i<10; i++){
+              cout << setw(8) << staffrecord[0][i] << "     |" << "    " ;
+            }
+            cout << endl;
+            cout << "-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------";
+            cout << endl;
+
+            //modify file
+            staffrecord[k][9] = newslot4;
+            for (int l=0; l<10; l++) {
+              cout << setw(8) <<staffrecord[k][l] << "     |" << "    " ;
+            }
+            cout << "\n";
+          }
+          else
+          {
+            continue;
+          }
+        }
+
+        //add into file
+        fout.open("staffrec.txt");
+        if (fout.fail()) {
+          cout << "Error in file opening!"
+              << endl;
+            exit(1);
+          }
+
+        for (int l=0; l<500; l++){
+          if (staffrecord[l][0].length() > 0 )
+          {
+            for (int m=0; m<10; m++){
+              fout << staffrecord[l][m] << " " ;
+            }
+            fout << endl;
+          }
+          else {
+            break;
+          }
+        }
+        fin.close();
+        fout.close();
+        backToMenu();
+          break;
+        }
+    }
+
+    // add staff records
+    void addStaff(void) {
+      ofstream fout;
+      fout.open("staffrec.txt", ios::app);
+
+      if (fout.fail()) {
+         cout << "Error in file opening!"
+              << endl;
+           exit(1);
+        }
+
+        //opening FILE
+        ifstream fin;
+        fin.open("staffrec.txt");
+        if (fin.fail())
+        {
+            cout << "Error in file opening!" << endl;
+            exit(1);
+        }
+
+        string staffrecord[500][10];
+        for (int i=0; i<500; i++){
+          for (int j=0; j<10; j++){
+            fin >> staffrecord[i][j];
+          }
+        }
+
+        cout<<"\n\t                                       ======================";
+        cout<<"\n\t                                        Add New Staff Record";
+        cout<<"\n\t                                       ======================\n";
+
+
+        cout << "Enter New Staff Name: ";
+        cin >> staffName;
+        cout << "\n";
+        cout << "Enter New Staff ID: "; //error message?
+        cin >> staffID;
+        cout << "\n";
+        cout << "Enter New Staff Department (e.g. HR-Human Resoruces, PR-Public Relations, MKTG-Marketing, ACCT-Accounting): ";
+        cin >> staffRole;
+        cout << "\n";
+        cout << "Enter New Staff Date of Birth (i.e. DD/MM/YYYY): ";
+        cin >> birthday;
+        cout << "\n";
+        cout << "Enter New Staff Salary: ";
+        cin >> staffSalary;
+        cout << "\n";
+        cout << "Enter New Staff Casual Leaves Left: ";
+        cin >> staffCasualLeave;
+        cout << "\n";
+        cout << "Enter " << staffrecord[0][6] << ", else input N/A: ";
+        cin >> slot1;
+        cout << "\n";
+        cout << "Enter " << staffrecord[0][7] << ", else input N/A: ";
+        cin >> slot2;
+        cout << "\n";
+        cout << "Enter " << staffrecord[0][8] << ", else input N/A: ";
+        cin >> slot3;
+        cout << "\n";
+        cout << "Enter " << staffrecord[0][9] << ", else input N/A: ";
+        cin >> slot4;
+        cout << "\n";
+
+        // storing entered data into the staff record array
+        for (int i=0; i<500; i++){
+          if (staffrecord[i][0].length() == 0 )
+          {
+            staffrecord[i][0] = staffName;
+            staffrecord[i][1] = staffID;
+            staffrecord[i][2] = staffRole;
+            staffrecord[i][3] = birthday;
+            staffrecord[i][4] = staffSalary;
+            staffrecord[i][5] = staffCasualLeave;
+            staffrecord[i][6] = slot1;
+            staffrecord[i][7] = slot2;
+            staffrecord[i][8] = slot3;
+            staffrecord[i][9] = slot4;
+            }
+          else
+          {
+            break;
+          }
+        }
+
+        fout << staffName << " " << staffID << " " << staffRole << " "
+        << birthday << " " << staffSalary << " " << staffCasualLeave << " "
+        << slot1 << " " << slot2 << " " << slot3 << " " << slot4 << endl;
+        fout.close();
+
+        viewAllStaff();
+        fin.close();
+        backToMenu();
+    } //A
+
+    // delete staff records
+    void deleteStaff(void) {
+      cout << "\n\t\t\t========================================================";
+      cout << "\n\t\t\t   Please enter option to delete by stated attribute: " ;
+      cout << "\n\t\t\t========================================================";
+      cout << "\n";
+      cout << "\n\t\t\t____________________________________________";
+      cout << "\n";
+      cout << "\n\t\t\tOption 1: Staff ID";
+      cout << "\n\t\t\t____________________________________________";
+      cout << "\n";
+      cout << "\n\t\t\tOption 2: Name";
+      cout << "\n\t\t\t____________________________________________";
+      cout << "\n";
+      cout << "\n\t\t\tOption 3: Birthday";
+      cout << "\n\t\t\t____________________________________________";
+      cout << "\n";
+      cout << "\n\t\t\tOption 4: Department";
+      cout << "\n\t\t\t____________________________________________";
+      cout << "\n\n";
+
+      //input option
+      cout << "Your option: ";
+      int optionDel;
+      cin >> optionDel;
+      cout <<endl;
+
+      //declaration
+      ifstream staffRecFile;
+      ofstream tmp;
+      string line;
+      ofstream fout;
+
+
+      //execute action for chosen options
+      switch(optionDel) {
+        default:
+          cout << "This option is unavailable \n";
+          break;
+        case 1: //delete by ID
+          //input ID
+          cout << "Enter ID number: ";
+          cin >> staffID;
+          cout <<endl;
+
+          //open read file & write file
+          staffRecFile.open("staffrec.txt");
+          tmp.open("temp.txt");
+          if (staffRecFile.fail())
+          {
+              cout << "Error in file opening!" << endl;
+              exit(1);
+          }
+          if (tmp.fail())
+          {
+            cout << "Error in file opening!" << endl;
+            exit(1);
+          }
+
+          //open file to store in terminated file
+          fout.open("terminatedStaff.txt", ios::app);
+          if (fout.fail()) {
+             cout << "Error in file opening!"
+                  << endl;
+               exit(1);
+            }
+
+          //delete employee
+          while (getline(staffRecFile,line)) {
+            if (line.find(staffID) == string::npos) {
+              tmp << line << endl;
+            }
+            if (line.find(staffID) != string::npos) {
+              fout << "\n" << line ;
+            }
+          }
+          staffRecFile.close();
+          tmp.close();
+          fout.close();
+          remove("staffrec.txt");
+          rename("temp.txt", "staffrec.txt");
+          viewAllStaff();
+          break;
+        case 2: //delete by name
+          //input name
+          cout << "Enter Staff Name: ";
+          cin >> staffName;
+          cout <<endl;
+
+          //open read file & write file
+          staffRecFile.open("staffrec.txt");
+          tmp.open("temp.txt");
+          if (staffRecFile.fail())
+          {
+            cout << "Error in file opening!" << endl;
+            exit(1);
+          }
+          if (tmp.fail())
+          {
+            cout << "Error in file opening!" << endl;
+            exit(1);
+          }
+
+          //open file to store in terminated file
+          fout.open("terminatedStaff.txt", ios::app);
+          if (fout.fail()) {
+             cout << "Error in file opening!"
+                  << endl;
+               exit(1);
+            }
+
+          //delete employee
+          while (getline(staffRecFile,line)) {
+            if (line.find(staffName) == string::npos) {
+              tmp << line << endl;
+            }
+            if (line.find(staffName) != string::npos) {
+              fout << "\n" << line ;
+            }
+          }
+
+          staffRecFile.close();
+          tmp.close();
+          fout.close();
+          remove("staffrec.txt");
+          rename("temp.txt", "staffrec.txt");
+          viewAllStaff();
+          break;
+        case 3: //delete by bday
+            //input bday
+            cout << "Enter Staff Birthday (i.e. DD/MM/YYYY): ";
+            cin >> birthday;
+            cout << endl;
+
+            //open read file & write file
+            staffRecFile.open("staffrec.txt");
+            tmp.open("temp.txt");
+            if (staffRecFile.fail())
+            {
+              cout << "Error in file opening!" << endl;
+              exit(1);
+            }
+            if (tmp.fail())
+            {
+              cout << "Error in file opening!" << endl;
+              exit(1);
+            }
+
+            //open file to store in terminated file
+            fout.open("terminatedStaff.txt", ios::app);
+            if (fout.fail()) {
+               cout << "Error in file opening!"
+                    << endl;
+                 exit(1);
+              }
+
+            //delete employee
+            while (getline(staffRecFile,line)) {
+              if (line.find(birthday) == string::npos) {
+                tmp << line << endl;
+              }
+              if (line.find(birthday) != string::npos) {
+                fout << "\n" << line ;
+              }
+            }
+
+            staffRecFile.close();
+            tmp.close();
+            fout.close();
+            remove("staffrec.txt");
+            rename("temp.txt", "staffrec.txt");
+            viewAllStaff();
+            break;
+        case 4: //delete by department
+            //input bday
+            cout << "Enter Staff's Department (e.g. HR-Human Resoruces, PR-Public Relations, MKTG-Marketing, ACCT-Accounting): ";
+            cin >> staffRole;
+            cout << endl;
+
+            //open read file & write file
+            staffRecFile.open("staffrec.txt");
+            tmp.open("temp.txt");
+            if (staffRecFile.fail())
+            {
+              cout << "Error in file opening!" << endl;
+              exit(1);
+            }
+            if (tmp.fail())
+            {
+              cout << "Error in file opening!" << endl;
+              exit(1);
+            }
+
+            //open file to store in terminated file
+            fout.open("terminatedStaff.txt", ios::app);
+            if (fout.fail()) {
+               cout << "Error in file opening!"
+                    << endl;
+                 exit(1);
+              }
+
+            //delete employee
+            while (getline(staffRecFile,line)) {
+              if (line.find(staffRole) == string::npos) {
+                tmp << line << endl;
+              }
+              if (line.find(staffRole) != string::npos) {
+                fout << "\n" << line ;
+              }
+            }
+
+            staffRecFile.close();
+            tmp.close();
+            fout.close();
+            remove("staffrec.txt");
+            rename("temp.txt", "staffrec.txt");
+            viewAllStaff();
+            break;
+      }
+    }
+
+    // view list of terminated staff
+    void terminatedStaff(void) {
+      ifstream fin;
+      fin.open("terminatedStaff.txt");
+      if (fin.fail())
+      {
+          cout << "Error in file opening!" << endl;
+          exit(1);
+      }
+      cout<<"\n\t                                                           ==================================";
+      cout<<"\n\t                                                            List of Terminated Staff Members";
+      cout<<"\n\t                                                           ==================================\n";
+
+
+      string staffrecord[500][10];
+      for (int i=0; i<500; i++){
+        for (int j=0; j<10; j++){
+          fin >> staffrecord[i][j];
+        }
+      }
+
+      //outputting staff
+      cout << "===================================================================================================================================================================================";
+      for (int i=0; i<500; i++){
+        if (staffrecord[i][0].length() > 0 )
+        {
+        cout << "\n";
+        cout << "-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------";
+        cout << endl << endl;
+        for (int j=0; j<10; j++){
+          cout << setw(8) <<staffrecord[i][j] << "     |" << "    " ;
+          }
+        cout << "\n";
+        }
+        else {
+          break;
+        }
+      }
+
+      cout << endl;
+      fin.close();
+
+      backToMenu();
+    }
+
+    // request casual leave
+    void requestLeave(void) {
+
+        //opening FILE
+        ifstream fin;
+        fin.open("staffrec.txt");
+        if (fin.fail())
+        {
+            cout << "Error in file opening!" << endl;
+            exit(1);
+        }
+
+        string staffrecord[500][10];
+        for (int i=0; i<500; i++){
+          for (int j=0; j<10; j++){
+            fin >> staffrecord[i][j];
+          }
+        }
+
+      // approve/disapprove casual leave
+      cout<<"\n\t                             ==========================";
+      cout<<"\n\t                              Request For Casual Leave";
+      cout<<"\n\t                             ==========================\n";
+      cout << "\n";
+      cout << "Enter Staff ID who requested for casual leave: ";
+      cin >> clID;
+
+      cout << "\n";
+      cout<<"\n---------------------------------------------------------------";
+      cout<<"\n        NAME        |     ID     |     CASUAL LEAVES LEFT    \n";
+      cout<<"---------------------------------------------------------------" << endl;
+
+      for (int k=0; k<500; k++)
+      {
+        if (staffrecord[k][1] == clID)
+        {
+          if ( std::stoi(staffrecord[k][5]) == 0 )
+          {
+            cout << setw(12) << staffrecord[k][0] << setw(20) << staffrecord[k][1] << setw(15) << staffrecord[k][5]  <<endl;
+            cout << "\n";
+            cout << "Request: DENIED" <<endl;
+          }
+          else
+          {
+            n = (std::stoi(staffrecord[k][5])) - 1;
+            leavesleft = std::to_string(n);
+            staffrecord[k][5] = leavesleft;
+            cout << setw(12) << staffrecord[k][0] << setw(20) << staffrecord[k][1] << setw(15) << staffrecord[k][5]  <<endl;
+            cout << "\n";
+            cout << "Request: APPROVED" <<endl;
+          }
+        }
+        else
+        {
+          continue;
+        }
+      }
+
+      ofstream fout;
+      fout.open("staffrec.txt");
+
+      if (fout.fail()) {
+         cout << "Error in file opening!"
+              << endl;
+           exit(1);
+        }
+
+      for (int l=0; l<500; l++){
+        if (staffrecord[l][0].length() > 0 )
+        {
+        for (int m=0; m<10; m++){
+          fout << staffrecord[l][m] << " " ;
+          }
+        fout << endl;
+        }
+        else {
+          break;
+        }
+      }
+
+      fin.close();
+      fout.close();
+      backToMenu();
+    }
+
+    // add a new attribute
+    void addAttribute(void) {
+
+      //opening FILE
+      ifstream fin;
+      fin.open("staffrec.txt");
+      if (fin.fail())
+      {
+          cout << "Error in file opening!" << endl;
+          exit(1);
+      }
+
+      string staffrecord[500][10];
+      for (int i=0; i<500; i++){
+        for (int j=0; j<10; j++){
+          fin >> staffrecord[i][j];
+        }
+      }
+
+      // outputting attribute headers
+      cout << "===================================================================================================================================================================================";
+      cout << endl;
+      for (int i=0; i<10; i++){
+        cout << setw(8) << staffrecord[0][i] << "     |" << "    " ;
+      }
+      cout << endl;
+      cout << "===================================================================================================================================================================================";
+      cout<< endl << endl;
+
+      int slotchoice;
+      cout << "Please choose empty slot to add attribute (1-4): ";
+      cin >> slotchoice;
+      cout<< endl;
+
+      cout << "What attribute would you like to add?" << endl;
+      cout << "Attribute name: ";
+      cin >> attribute;
+      cout << endl;
+
+      //calling function based on option chosen
+      switch (slotchoice) {
+        case 1:
+          staffrecord[0][6] = attribute;
+          break;
+        case 2:
+          staffrecord[0][7] = attribute;
+          break;
+        case 3:
+          staffrecord[0][8] = attribute;
+          break;
+        case 4:
+          staffrecord[0][9] = attribute;
+          break;
+      }
+
+      ofstream fout;
+      fout.open("staffrec.txt");
+
+      if (fout.fail()) {
+         cout << "Error in file opening!"
+              << endl;
+           exit(1);
+        }
+
+        for (int l=0; l<500; l++){
+          if (staffrecord[l][0].length() > 0 )
+          {
+          for (int m=0; m<10; m++){
+            fout << staffrecord[l][m] << " " ;
+            }
+          fout << endl;
+          }
+          else {
+            break;
+          }
+        }
+
+      fin.close();
+      fout.close();
+      viewAllStaff();
+      backToMenu();
+    }
+
+    // search by salary and compare
+    void salarycheck(void) {
+
+      //opening FILE
+      ifstream fin;
+      fin.open("staffrec.txt");
+      if (fin.fail())
+      {
+          cout << "Error in file opening!" << endl;
+          exit(1);
+      }
+
+      string staffrecord[500][10];
+      for (int i=0; i<500; i++){
+        for (int j=0; j<10; j++){
+          fin >> staffrecord[i][j];
+        }
+      }
+      //Asking for amount to compare
+      cout << "Enter salary amount: ";
+      cin >> salary;
+      bool found = false;
+
+      //user's option
+      cout << "Please enter 1 to search for record with salary greater than or equal to $" << salary
+      << " or 2 for less than or equal to $" << salary << "." << endl;
+      cout << "Your option: ";
+      int option;
+      cin >> option;
+      cout << "\n";
+
+      //calling function based on option chosen
+      switch (option) {
+        case 1:
+            cout<<"\n\t                                                           =======================";
+            cout<<"\n\t                                                            List of Staff Members";
+            cout<<"\n\t                                                           =======================\n";
+
+            // outputting attribute headers
+            cout << "===================================================================================================================================================================================";
+            cout << endl;
+            for (int i=0; i<10; i++){
+              cout << setw(8) << staffrecord[0][i] << "     |" << "    " ;
+            }
+            cout<< endl;
+
+            for (int i=1; i<500; i++)
+            {
+              if (staffrecord[i][0].length() > 0 )
+              {
+                if (std::stoi(staffrecord[i][4]) >= salary)
+                {
+                  cout << "\n";
+                  cout << "-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------";
+                  cout << endl << endl;
+                  for (int j=0; j<10; j++)
+                  {
+                    cout << setw(8) << staffrecord[i][j] << "     |" << "    " ;
+                    found = true;
+                  }
+                cout << endl << endl;
+                }
+              }
+              else if (found == false)
+              {
+                cout << endl;
+                cout << "No employee has the salary of >= $" << salary << ".";
+                cout << endl << endl;
+                break;
+              }
+              else
+              {
+                break;
+              }
+            }
+            fin.close();
+            backToMenu();
+        case 2:
+        cout<<"\n\t                                                           =======================";
+        cout<<"\n\t                                                            List of Staff Members";
+        cout<<"\n\t                                                           =======================\n";
+
+        // outputting attribute headers
+        cout << "===================================================================================================================================================================================";
+        cout << endl;
+        for (int i=0; i<10; i++){
+          cout << setw(8) << staffrecord[0][i] << "     |" << "    " ;
+        }
+        cout<< endl;
+
+        for (int i=1; i<500; i++)
+        {
+          if (staffrecord[i][0].length() > 0 )
+          {
+            if (std::stoi(staffrecord[i][4]) <= salary)
+            {
+              cout << "\n";
+              cout << "-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------";
+              cout << endl << endl;
+              for (int j=0; j<10; j++)
+              {
+                cout << setw(8) << staffrecord[i][j] << "     |" << "    " ;
+                found = true;
+              }
+            cout << endl << endl;
+            }
+          }
+          else if (found == false)
+          {
+            cout << endl;
+            cout << "No employee has the salary of <= $" << salary << ".";
+            cout << endl << endl;
+            break;
+          }
+          else
+          {
+            break;
+          }
+        }
+        fin.close();
+        backToMenu();
+    }
+  }
+
+  public:
+    void menu(void) { //the menu page
+      while(true) {
+        cout << "\n\t\t\t============================================";
+        cout << "\n\t\t\t          Staff Management System " ;
+        cout << "\n\t\t\t============================================";
+        cout << "\n";
+        cout << "\n\t\t\t____________________________________________";
+        cout << "\n";
+        cout << "\n\t\t\tOption 1: View List of Staff Members";
+        cout << "\n\t\t\t____________________________________________";
+        cout << "\n";
+        cout << "\n\t\t\tOption 2: Search Staff Records";
+        cout << "\n\t\t\t____________________________________________";
+        cout << "\n";
+        cout << "\n\t\t\tOption 3: Modify Staff Records";
+        cout << "\n\t\t\t____________________________________________";
+        cout << "\n";
+        cout << "\n\t\t\tOption 4: Add New Staff Record";
+        cout << "\n\t\t\t____________________________________________";
+        cout << "\n";
+        cout << "\n\t\t\tOption 5: Delete Existing Staff Record";
+        cout << "\n\t\t\t____________________________________________";
+        cout << "\n";
+        cout << "\n\t\t\tOption 6: View List of Terminated Staff";
+        cout << "\n\t\t\t____________________________________________";
+        cout << "\n";
+        cout << "\n\t\t\tOption 7: Request for Casual Leave";
+        cout << "\n\t\t\t____________________________________________";
+        cout << "\n";
+        cout << "\n\t\t\tOption 8: Add New Atrribute";
+        cout << "\n\t\t\t____________________________________________";
+        cout << "\n";
+        cout << "\n\t\t\tOption 9: Salary Check";
+        cout << "\n\t\t\t____________________________________________";
+        cout << "\n";
+        cout << "\n\t\t\tOption 10: End Program";
+        cout << "\n\t\t\t____________________________________________";
+        cout << "\n";
+        cout << "\n";
+        cout << "Please Enter Your Option: ";
+
+        //user's option
+        int option;
+        cin >> option;
+        cout << "\n";
+
+        //calling function based on option chosen
+        switch (option) {
+          case 1:
+            viewAllStaff();
+            break;
+          case 2:
+            searchStaff();
+            break;
+          case 3:
+            modifyStaff();
+            break;
+          case 4:
+            addStaff();
+            break;
+          case 5:
+            deleteStaff();
+            break;
+          case 6:
+            terminatedStaff();
+            break;
+          case 7:
+            requestLeave();
+            break;
+          case 8:
+            addAttribute();
+            break;
+          case 9:
+            salarycheck();
+            break;
+          case 10:
+            cout << "Goodbye! \n"<<endl;
+            exit(1);
+          default:
+            cout << "This option is unavailable \n";
+            break;
+          }
+        }
+    }
+};
+
+int main() {
+  staff s;
+  s.menu();
+  return 0;
+}
